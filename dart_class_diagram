@@ -1,0 +1,304 @@
+@startuml
+set namespaceSeparator ::
+
+abstract class "MList.dart::MList<E>" {
+  +int lastIndex
+  +E first
+  +E last
+  +int length
+  +bool isEmpty
+  +bool isNotEmpty
+  +void forEach()
+  +void add()
+  +void addAll()
+  +E removeAt()
+  +void remove()
+  +MList where()
+  +void clear()
+  +String toString()
+  +E []()
+  +void []=()
+}
+
+class "MList.dart::MListException" {
+  +String message
+  +String toString()
+  {static} +MListException RangeError()
+  {static} +MListException NegativeIndex()
+}
+
+"dart::core::Exception" <|-- "MList.dart::MListException"
+
+abstract class "DateBase.dart::DateBase" {
+  +int month
+  +int year
+  +int day
+  +int hour
+  +int seconds
+  +int minutes
+  +String toString()
+  +bool isValid()
+}
+
+class "DateBase.dart::DateException" {
+  +String message
+}
+
+class "MDuration.dart::MDuration" {
+  +int hours
+  +int minutes
+  +String toString()
+  {static} +MDuration fromString()
+  +Map toMap()
+  {static} +MDuration fromMap()
+}
+
+class "MDuration.dart::MDurationException" {
+  +String message
+  +String toString()
+}
+
+"dart::core::Exception" <|-- "MDuration.dart::MDurationException"
+
+abstract class "Employee.dart::Employee" {
+  +String id
+  +String name
+}
+
+abstract class "AgentBase.dart::AgentBase" {
+  +String extensionNumber
+  +int extraWeeekHours
+  +MList<Client> clients
+  +AgentSpeciality speciality
+  +String image
+  +bool ==()
+  +String toString()
+}
+
+"AgentBase.dart::AgentBase" o-- "MList.dart::MList<Client>"
+"AgentBase.dart::AgentBase" o-- "AgentSpecialty.dart::AgentSpeciality"
+"employee.dart::Employee" <|-- "AgentBase.dart::AgentBase"
+
+abstract class "CallBase.dart::CallBase" {
+  +String id
+  +MDuration duration
+  +Date date
+  +bool ==()
+  +String toString()
+}
+
+"CallBase.dart::CallBase" o-- "MDuration.dart::MDuration"
+"CallBase.dart::CallBase" o-- "Date.dart::Date"
+
+abstract class "ClientBase.dart::ClientBase" {
+  +String id
+  +String name
+  +String telephoneNumber
+  +MList<Call> calls
+  +int hashCode
+  +bool ==()
+  +String toString()
+  +void addCall()
+}
+
+"ClientBase.dart::ClientBase" o-- "MList.dart::MList<Call>"
+
+class "MLinkedList.dart::MLinkedList<E>" {
+  +MLinkedListNode<E> anchor
+  +E first
+  +E last
+  +bool isEmpty
+  +bool isNotEmpty
+  +int length
+  +E []()
+  +void []=()
+  +void add()
+  +void addAll()
+  +void remove()
+  +E removeAt()
+  +MLinkedList where()
+  +void clear()
+  +dynamic toString()
+  +void forEach()
+}
+
+"MLinkedList.dart::MLinkedList<E>" o-- "MLinkedListNode.dart::MLinkedListNode<E>"
+"MList.dart::MList<E>" <|-- "MLinkedList.dart::MLinkedList<E>"
+
+class "MLinkedListNode.dart::MLinkedListNode<E>" {
+  -MLinkedListNode<E> _prev
+  -MLinkedListNode<E> _next
+  -E _data
+  +E data
+  +MLinkedListNode<E> next
+  +MLinkedListNode<E> prev
+}
+
+"MLinkedListNode.dart::MLinkedListNode<E>" o-- "MLinkedListNode.dart::MLinkedListNode<E>"
+
+class "MListNode.dart::MListNode<E>" {
+  -E _data
+  -MListNode<E> _next
+  +E data
+  +MListNode<E> next
+}
+
+"MListNode.dart::MListNode<E>" o-- "MListNode.dart::MListNode<E>"
+
+class "MListNode.dart::MListNodeException" {
+  +String message
+  +String toString()
+}
+
+class "MList.dart::MList<E>" {
+  +MListNode<E> anchor
+  +E first
+  +E last
+  +bool isEmpty
+  +bool isNotEmpty
+  +int length
+  +E []()
+  +void []=()
+  +void add()
+  +void addAll()
+  +void remove()
+  +E removeAt()
+  +MList where()
+  +int indexWhere()
+  +void clear()
+  +dynamic toString()
+  +void forEach()
+}
+
+"MList.dart::MList<E>" o-- "MListNode.dart::MListNode<E>"
+"MList.dart::MList<E>" <|-- "MList.dart::MList<E>"
+
+class "values::ColorHelper" {
+  {static} +Color primaryTextColor
+  {static} +Color secondTextColor
+  {static} +Color background
+  {static} +Color backgroundContrast
+  {static} +Color primaryElevatedButtonColor
+  {static} +Color dangerElevatedButtonColor
+  {static} +Color iconColor
+  {static} +Color iconVertColor
+}
+
+"values::ColorHelper" o-- "dart::ui::Color"
+
+class "AgentPopupMenu.dart::AgentPopupMenu" {
+  +int index
+  {static} +List<AgentPopupMenu> values
+  {static} +AgentPopupMenu UPDATE
+  {static} +AgentPopupMenu REMOVE
+}
+
+"AgentPopupMenu.dart::AgentPopupMenu" o-- "AgentPopupMenu.dart::AgentPopupMenu"
+
+class "DataType.dart::DataType" {
+  +int index
+  {static} +List<DataType> values
+  {static} +DataType IMAGES
+  {static} +DataType AGENTS
+  {static} +DataType CLIENTS
+  {static} +DataType CALLS
+}
+
+"DataType.dart::DataType" o-- "DataType.dart::DataType"
+
+class "FilterAgents.dart::FilterAgents" {
+  +int index
+  {static} +List<FilterAgents> values
+  {static} +FilterAgents NAME
+  {static} +FilterAgents SPECIALITY
+  {static} +FilterAgents ID
+  {static} +FilterAgents CLIENTS
+}
+
+"FilterAgents.dart::FilterAgents" o-- "FilterAgents.dart::FilterAgents"
+
+class "AgentSpecialty.dart::AgentSpeciality" {
+  +int index
+  {static} +List<AgentSpeciality> values
+  {static} +AgentSpeciality SERVERS
+  {static} +AgentSpeciality DESKTOPS
+  {static} +AgentSpeciality LAPTOPS
+  {static} +AgentSpeciality PRINTERS
+  {static} +AgentSpeciality COMPUTER_NETWORKS
+  {static} +AgentSpeciality LINUX
+  {static} +AgentSpeciality NO_SELECTED
+}
+
+"AgentSpecialty.dart::AgentSpeciality" o-- "AgentSpecialty.dart::AgentSpeciality"
+
+class "Client.dart::Client" {
+  +String id
+  +String name
+  +MList<Call> calls
+  +String telephoneNumber
+  +int hashCode
+  +String toString()
+  +void addCall()
+  +bool ==()
+  +Map toMap()
+  {static} +Client fromMap()
+}
+
+"Client.dart::Client" o-- "MList.dart::MList<Call>"
+"ClientBase.dart::ClientBase" <|-- "Client.dart::Client"
+
+class "DataInformation.dart::DataInformation" {
+  +int decimals
+  -int _bits
+  -int _length
+  -DataType _dataType
+  +String bitsFormated
+  +int length
+  +String textType
+  +int bits
+}
+
+"DataInformation.dart::DataInformation" o-- "DataType.dart::DataType"
+
+class "Call.dart::Call" {
+  +dynamic toString()
+  +bool ==()
+  {static} +Call fromMap()
+  +Map toMap()
+}
+
+"CallBase.dart::CallBase" <|-- "Call.dart::Call"
+
+class "Agent.dart::Agent" {
+  +String toString()
+  +bool ==()
+  {static} +Agent fromMap()
+  +Map toJson()
+}
+
+"AgentBase.dart::AgentBase" <|-- "Agent.dart::Agent"
+
+class "Date.dart::Date" {
+  +int month
+  +int year
+  +int day
+  +int hour
+  +int seconds
+  +int minutes
+  +bool isValid()
+  +String toString()
+  {static} +Date now()
+  {static} +Date fromMap()
+  +Map toMap()
+}
+
+"DateBase.dart::DateBase" <|-- "Date.dart::Date"
+
+class "Date.dart::DateException" {
+  +String message
+}
+
+"dart::core::Exception" <|-- "Date.dart::DateException"
+
+
+@enduml
