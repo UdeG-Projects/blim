@@ -7,8 +7,8 @@ class MDuration {
   String toString() => "$hours:$minutes";
 
   static MDuration fromString(String durationStr) => MDuration(
-      hours: durationStr.split(":")[0] as int,
-      minutes: durationStr.split(":")[1] as int);
+      hours: int.parse(durationStr.split(":")[0]),
+      minutes: int.parse(durationStr.split(":")[1]));
 
   Map<String, dynamic> toMap() => {
         "hours": hours,
