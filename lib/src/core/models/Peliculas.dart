@@ -50,7 +50,7 @@ class Peliculas {
   void leer() async {
     Directory localPath = await getApplicationDocumentsDirectory();
     File fileToRead = File('${localPath.path}/$fileName');
-
+    peliculas = MList<Pelicula>();
     if (!await fileToRead.exists()) return;
 
     var lineas = fileToRead.readAsLinesSync();

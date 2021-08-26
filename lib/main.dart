@@ -1,5 +1,4 @@
 import 'package:blim/src/screens/DemoScreen.dart';
-import 'package:blim/src/screens/DemoScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -19,7 +19,7 @@ class Pelicula extends Contenido {
 
   @override
   String toString() {
-    return "${this.id}|$titulo|$descripcion|$imagen|$duracion";
+    return "${this.id}|$titulo|$descripcion|$imagen|${duracion ?? '0:0'}";
   }
 
   static Pelicula fromString(String text) {

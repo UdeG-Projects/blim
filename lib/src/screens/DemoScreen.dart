@@ -1,6 +1,5 @@
 import 'package:blim/src/core/models/Pelicula.dart';
 import 'package:blim/src/core/models/Peliculas.dart';
-import 'package:blim/src/core/models/Serie.dart';
 import 'package:blim/src/core/structures/MDuration.dart';
 import 'package:blim/src/core/utils.dart';
 import 'package:flutter/material.dart';
@@ -55,17 +54,13 @@ class _DemoScreenState extends State<DemoScreen> {
                 )),
               ),
               ElevatedButton(
-                child: Text('Agregar random'),
+                child: Text('Agregar pelicula'),
                 onPressed: () {
-                  Pelicula pelicula = Pelicula(
-                    id: 'idunico',
-                    duracion: MDuration(minutes: 1, hours: 1),
-                    titulo: generateRandomId(),
-                    imagen: 'imagen url',
-                    descripcion: 'Desc',
-                  );
                   setState(() {
-                    peliculas.agregar(pelicula);
+                    tmpPelicula.id = generateRandomId();
+                    tmpPelicula.imagen =
+                        'https://vnoc.unam.mx/wp-content/uploads/2019/06/udg-300x148.jpg';
+                    peliculas.agregar(tmpPelicula);
                   });
                 },
               ),
@@ -96,6 +91,7 @@ class _DemoScreenState extends State<DemoScreen> {
                       setState(() {
                         peliculas.leer();
                       });
+                      print(peliculas.peliculas.length);
                     },
                   ),
                   SizedBox(width: 16),
