@@ -1,4 +1,4 @@
-import 'package:call_center/src/core/abstraction/DateBase.dart';
+import 'package:blim/src/core/abstraction/DateBase.dart';
 
 class Date extends DateBase {
   Date(

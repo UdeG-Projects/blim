@@ -1,4 +1,4 @@
-import 'package:call_center/src/core/structures/MList.dart';
+import 'package:blim/src/core/structures/MList.dart';
 
 testing() {
   MList<String> listStrings = MList();

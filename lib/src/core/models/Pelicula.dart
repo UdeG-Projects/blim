@@ -1,5 +1,5 @@
-import 'package:call_center/src/core/structures/MDuration.dart';
-import 'package:call_center/src/core/models/Contenido.dart';
+import 'package:blim/src/core/structures/MDuration.dart';
+import 'package:blim/src/core/models/Contenido.dart';
 
 class Pelicula extends Contenido {
   MDuration duracion = MDuration();

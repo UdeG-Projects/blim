@@ -1,5 +1,5 @@
-import 'package:call_center/src/core/abstraction/MList.dart';
-import 'package:call_center/src/core/structures/MListNode.dart';
+import 'package:blim/src/core/abstraction/MList.dart';
+import 'package:blim/src/core/structures/MListNode.dart';
 import 'package:flutter/material.dart';
 
 class MList<E> {
