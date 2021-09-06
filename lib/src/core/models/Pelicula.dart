@@ -17,6 +17,14 @@ class Pelicula extends Contenido {
           imagen: imagen,
         );
 
+  Pelicula clone() => Pelicula(
+        id: this.id,
+        titulo: this.titulo,
+        descripcion: this.descripcion,
+        imagen: this.imagen,
+        duracion: this.duracion,
+      );
+
   @override
   String toString() {
     return "${this.id}|$titulo|$descripcion|$imagen|${duracion ?? '0:0'}";

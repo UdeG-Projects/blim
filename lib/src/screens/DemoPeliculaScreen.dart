@@ -1,6 +1,5 @@
 import 'package:blim/src/core/models/Pelicula.dart';
-import 'package:blim/src/core/models/Peliculas.dart';
-import 'package:blim/src/core/structures/MDuration.dart';
+import 'package:blim/src/providers/Peliculas.dart';
 import 'package:blim/src/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -60,21 +59,20 @@ class _DemoScreenState extends State<DemoScreen> {
                     tmpPelicula.id = generateRandomId();
                     tmpPelicula.imagen =
                         'https://vnoc.unam.mx/wp-content/uploads/2019/06/udg-300x148.jpg';
-                    peliculas.agregar(tmpPelicula);
+                    peliculas.agregar(tmpPelicula.clone());
                   });
                 },
               ),
               SizedBox(height: 12),
-              Text(
-                'Peliculas',
-              ),
+              Text('Peliculas'),
               Container(
                 width: 200,
                 height: 400,
                 child: ListView.builder(
                   itemCount: peliculas.peliculas.length,
                   itemBuilder: (context, int index) {
-                    Pelicula p = peliculas.peliculas[index];
+                    Pelicula p =
+                        peliculas.peliculas[peliculas.peliculas.length - index];
                     return ListTile(
                       title: Text(p.titulo),
                       subtitle: Text(p.descripcion),
