@@ -183,4 +183,35 @@ class MList<E> {
       aux = aux.next;
     }
   }
+
+  /// To convert from String to MList
+  /// TODO: Parse commas
+  static MList fromString(String text, fromStringConverter(String text)) {
+    if (text.isEmpty) return MList();
+
+    MList list = MList();
+    var entries = text.substring(1, text.length - 1).split(',');
+
+    entries.forEach((e) {
+      list.add(fromStringConverter(e));
+    });
+
+    return list;
+  }
+
+  /// From MList to String
+  /// TODO: Parse commas
+  // String toString(MList<E> list, E toStringConverter(String text)) {
+
+  //   if (list.isEmpty) return "";
+
+  //   MList<E> list = MList<E>();
+  //   var entries = text.substring(1, text.length - 1).split(',');
+
+  //   entries.forEach((e) {
+  //     list.add(toStringConverter(e));
+  //   });
+
+  //   return list;
+  // }
 }
