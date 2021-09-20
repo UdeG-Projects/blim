@@ -16,7 +16,7 @@ class ListasReproduccion {
   MList<ListaReproduccion> peliculas = MList();
   MList<String> indexPeliculas = MList();
 
-  Future<ListaReproduccion> leer(String id) async {
+  Future<ListaReproduccion> buscar(String id) async {
     Directory localPath = await getApplicationDocumentsDirectory();
     File indexFile = File('${localPath.path}/$indexfileName');
     if (!await indexFile.exists()) return null;
@@ -37,7 +37,7 @@ class ListasReproduccion {
     return listaReproduccion;
   }
 
-  Future<ListaReproduccion> guardar(ListaReproduccion lista) async {
+  Future<ListaReproduccion> agregar(ListaReproduccion lista) async {
     lista.id = generateRandomId(RegisterIndex.VALUE_LENGTH);
 
     Directory localPath = await getApplicationDocumentsDirectory();
@@ -90,10 +90,36 @@ class ListasReproduccion {
     print('Nuevo indice eliminado en: ${indexFile.path}');
   }
 
+  Future<ListaReproduccion> modificar(ListaReproduccion lista) async {
+    Directory localPath = await getApplicationDocumentsDirectory();
+    File indexFile = File('${localPath.path}/$indexfileName'),
+        registersFile = File('${localPath.path}/$fileName');
+
+    if (!await registersFile.exists()) return null;
+    if (!await indexFile.exists()) return null;
+
+    var indexLines = indexFile.readAsLinesSync();
+    int regIndex;
+
+    for (var i = 0; i < indexLines.length; i++) {
+      RegisterIndex index = RegisterIndex.fromString(indexLines[i]);
+      if (index.value == lista.id) {
+        regIndex = index.key;
+      }
+    }
+
+    var regsLines = registersFile.readAsLinesSync();
+    regsLines[regIndex] = lista.toString();
+
+    registersFile.writeAsString("${regsLines.join('\n')}\n");
+
+    print('Nuevo registro modificado en: ${registersFile.path}');
+  }
+
   Future<int> _getNewIndex() async {
     Directory localPath = await getApplicationDocumentsDirectory();
-    File indexFile = File('${localPath.path}/$indexfileName');
+    File registersFile = File('${localPath.path}/$fileName');
 
-    return indexFile.lengthSync() ~/ RegisterIndex.REGISTERINDEX_LENGTH;
+    return registersFile.readAsLinesSync().length;
   }
 }
