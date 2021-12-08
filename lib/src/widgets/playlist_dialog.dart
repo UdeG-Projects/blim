@@ -51,7 +51,7 @@ class _PlaylistDialogState extends State<PlaylistDialog> {
             SizedBox(height: 20),
             DropdownButtonFormField<ListaReproduccion>(
                 value: lista,
-                onChanged: (v) => lista = v,
+                onChanged: (v) => setState(() => lista = v),
                 decoration: InputDecoration(
                   label: Text('Seleccionar playlist'),
                   border: OutlineInputBorder(
@@ -71,6 +71,9 @@ class _PlaylistDialogState extends State<PlaylistDialog> {
                     : () async {
                         appLogic.agregarContenidoPlaylist(
                             widget.contenido, lista);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Se ha agregado a tu playlist.')));
                       },
               ),
             )
