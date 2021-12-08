@@ -33,6 +33,21 @@ class Date extends DateBase {
   @override
   String toString() => "$day/$month/$year $hour:$minutes";
 
+  static Date fromString(String text) {
+    Date date = Date();
+    String day = text.split(' ')[0];
+    String time = text.split(' ')[1];
+
+    date.day = int.parse(day.split('/')[0]);
+    date.month = int.parse(day.split('/')[1]);
+    date.year = int.parse(day.split('/')[2]);
+
+    date.hour = int.parse(time.split(':')[0]);
+    date.minutes = int.parse(time.split(':')[1]);
+
+    return date;
+  }
+
   /// Get the actual date.
   static Date now() {
     DateTime now = DateTime.now();

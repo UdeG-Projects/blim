@@ -107,7 +107,9 @@ class MList<E> {
     MListNode<E> tmpAnchor = this.anchor;
 
     while (tmpAnchor?.data != null) {
-      if (whereFunction(tmpAnchor.data)) _list.add(tmpAnchor.data);
+      if (whereFunction(tmpAnchor.data)) {
+        _list.add(tmpAnchor.data);
+      }
       tmpAnchor = tmpAnchor.next;
     }
 
@@ -134,7 +136,7 @@ class MList<E> {
   }
 
   /// Get the first element added in list.
-  get first => anchor.data;
+  get first => anchor?.data ?? null;
 
   /// Get the last element added in list.
   get last => this[lastIndex];
@@ -154,9 +156,10 @@ class MList<E> {
     MListNode<E> aux = anchor;
     while (aux?.data != null) {
       toString += "${aux.data}";
-      toString += aux?.next == null ? "]" : ", ";
+      toString += aux?.next != null ? ", " : '';
       aux = aux.next;
     }
+    toString += "]";
 
     return toString;
   }
@@ -184,16 +187,27 @@ class MList<E> {
     }
   }
 
+  /// To cast type
+  MList<E> cast() {
+    MList<E> list = MList<E>();
+    this.forEach((e) {
+      list.add(e);
+    });
+
+    return list;
+  }
+
   /// To convert from String to MList
   /// TODO: Parse commas
   static MList fromString(String text, fromStringConverter(String text)) {
-    if (text.isEmpty) return MList();
+    if (text.isEmpty || text == "[]") return MList();
 
     MList list = MList();
     var entries = text.substring(1, text.length - 1).split(',');
 
     entries.forEach((e) {
-      list.add(fromStringConverter(e));
+      var newElement = fromStringConverter(e);
+      list.add(newElement);
     });
 
     return list;

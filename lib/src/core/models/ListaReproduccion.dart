@@ -1,26 +1,26 @@
-import 'package:blim/src/core/models/Pelicula.dart';
-import 'package:blim/src/core/structures/MDuration.dart';
 import 'package:blim/src/core/models/Contenido.dart';
 import 'package:blim/src/core/structures/MList.dart';
 
 class ListaReproduccion {
-  String id, nombre;
-  MList<Contenido> contenidos;
+  String id, nombre, perfil;
+  MList<dynamic> contenidos;
 
   ListaReproduccion({
     this.id,
     this.nombre,
+    this.perfil,
     this.contenidos,
   });
 
   ListaReproduccion clone() => ListaReproduccion(
         id: this.id,
         nombre: this.nombre,
+        perfil: this.perfil,
         contenidos: this.contenidos,
       );
 
   @override
-  String toString() => "$id|$nombre|${contenidos.toString()}";
+  String toString() => "$id|$nombre|$perfil|${contenidos.toString()}";
 
   static ListaReproduccion fromString(String text) {
     var fields = text.split("|");
@@ -28,7 +28,8 @@ class ListaReproduccion {
     return new ListaReproduccion(
       id: fields[0],
       nombre: fields[1],
-      contenidos: MList.fromString(fields[2], Pelicula.fromString),
+      perfil: fields[2],
+      contenidos: MList.fromString(fields[3], Contenido.fromString),
     );
   }
 }

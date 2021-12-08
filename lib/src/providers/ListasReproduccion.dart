@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:ffi';
 import 'dart:io';
 
-import 'package:blim/src/core/models/RegisterIndex.dart';
+import 'package:blim/src/core/models/PrimaryIndex.dart';
 import 'package:blim/src/core/models/ListaReproduccion.dart';
 import 'package:blim/src/core/structures/MList.dart';
 import 'package:blim/src/core/utils.dart';
@@ -13,7 +13,7 @@ const String fileName = 'listas_reproduccion.txt';
 const String indexfileName = 'listas_reproduccion.index.txt';
 
 class ListasReproduccion {
-  MList<ListaReproduccion> peliculas = MList();
+  MList<ListaReproduccion> listas = MList();
   MList<String> indexPeliculas = MList();
 
   Future<ListaReproduccion> buscar(String id) async {
@@ -21,16 +21,17 @@ class ListasReproduccion {
     File indexFile = File('${localPath.path}/$indexfileName');
     if (!await indexFile.exists()) return null;
 
-    var indices = indexFile.readAsLinesSync();
+    var indices = await indexFile.readAsLines();
     int indice;
+
     indices.forEach((String line) {
-      RegisterIndex index = RegisterIndex.fromString(line);
+      PrimaryIndex index = PrimaryIndex.fromString(line);
       if (index.value == id) indice = index.key;
     });
 
     File registersFile = File('${localPath.path}/$fileName');
 
-    var lines = registersFile.readAsLinesSync();
+    var lines = await registersFile.readAsLines();
     ListaReproduccion listaReproduccion =
         ListaReproduccion.fromString(lines[indice]);
 
@@ -38,7 +39,7 @@ class ListasReproduccion {
   }
 
   Future<ListaReproduccion> agregar(ListaReproduccion lista) async {
-    lista.id = generateRandomId(RegisterIndex.VALUE_LENGTH);
+    lista.id = lista.id ?? generateRandomId(PrimaryIndex.VALUE_LENGTH);
 
     Directory localPath = await getApplicationDocumentsDirectory();
     File indexFile = File('${localPath.path}/$indexfileName'),
@@ -47,11 +48,12 @@ class ListasReproduccion {
     if (!await registersFile.exists()) registersFile.create();
     if (!await indexFile.exists()) indexFile.create();
 
-    RegisterIndex newIndex =
-        RegisterIndex(key: await _getNewIndex(), value: lista.id);
+    PrimaryIndex newIndex =
+        PrimaryIndex(key: await _getNewIndex(), value: lista.id);
 
-    registersFile.writeAsString("${lista.toString()}\n", mode: FileMode.append);
-    indexFile.writeAsString("${newIndex.toIndexString()}\n",
+    await registersFile.writeAsString("${lista.toString()}\n",
+        mode: FileMode.append);
+    await indexFile.writeAsString("${newIndex.toString()}\n",
         mode: FileMode.append);
 
     print('Nuevo registro guardado en: ${registersFile.path}');
@@ -68,23 +70,23 @@ class ListasReproduccion {
     if (!await registersFile.exists()) return null;
     if (!await indexFile.exists()) return null;
 
-    var indexLines = indexFile.readAsLinesSync();
+    var indexLines = await indexFile.readAsLines();
     int regIndex, indexIndex = 0;
 
     for (var i = 0; i < indexLines.length; i++) {
-      RegisterIndex index = RegisterIndex.fromString(indexLines[i]);
+      PrimaryIndex index = PrimaryIndex.fromString(indexLines[i]);
       if (index.value == id) {
         regIndex = index.key;
         indexIndex = i;
       }
     }
 
-    var regsLines = registersFile.readAsLinesSync();
+    var regsLines = await registersFile.readAsLines();
     regsLines[regIndex] = "";
     indexLines.removeAt(indexIndex);
 
     registersFile.writeAsString("${regsLines.join('\n')}\n");
-    indexFile.writeAsStringSync("${indexLines.join('\n')}\n");
+    await indexFile.writeAsString("${indexLines.join('\n')}\n");
 
     print('Nuevo registro eliminado en: ${registersFile.path}');
     print('Nuevo indice eliminado en: ${indexFile.path}');
@@ -98,17 +100,17 @@ class ListasReproduccion {
     if (!await registersFile.exists()) return null;
     if (!await indexFile.exists()) return null;
 
-    var indexLines = indexFile.readAsLinesSync();
+    var indexLines = await indexFile.readAsLines();
     int regIndex;
 
     for (var i = 0; i < indexLines.length; i++) {
-      RegisterIndex index = RegisterIndex.fromString(indexLines[i]);
+      PrimaryIndex index = PrimaryIndex.fromString(indexLines[i]);
       if (index.value == lista.id) {
         regIndex = index.key;
       }
     }
 
-    var regsLines = registersFile.readAsLinesSync();
+    var regsLines = await registersFile.readAsLines();
     regsLines[regIndex] = lista.toString();
 
     registersFile.writeAsString("${regsLines.join('\n')}\n");
@@ -120,6 +122,21 @@ class ListasReproduccion {
     Directory localPath = await getApplicationDocumentsDirectory();
     File registersFile = File('${localPath.path}/$fileName');
 
-    return registersFile.readAsLinesSync().length;
+    return (await registersFile.readAsLines()).length;
+  }
+
+  Future<void> leer(MList<dynamic> ids) {
+    listas = MList<ListaReproduccion>();
+
+    if (ids.length == 0) return null;
+
+    ids.forEach((e) async {
+      var tmpList = await buscar(e as String);
+      listas.add(tmpList);
+    });
+  }
+
+  void clear() {
+    listas = MList<ListaReproduccion>();
   }
 }
